@@ -24,8 +24,8 @@ class TeacherGradingSystem:
     def __init__(self, 
                  api_url: str,
                  api_key: str,
-                 model_name: str = "gpt-4",
-                 results_dir: str = "../Results/deepseek",
+                 model_name: str ,
+                 results_dir: str ,
                  backup: bool = True,
                  max_retries: int = 3):
         """
@@ -137,8 +137,8 @@ class TeacherGradingSystem:
                     "content": prompt
                 }
             ],
-            "temperature": 0.3,  # 较低的温度以获得更稳定的评分
-            "max_tokens": 500
+            "temperature": 0.4,  # 较低的温度以获得更稳定的评分
+            "max_tokens": 1500
         }
         
         for attempt in range(self.max_retries):
@@ -247,7 +247,7 @@ class TeacherGradingSystem:
             need_grading = total - already_graded
             
             print(f"\n处理文件: {file_path.name}")
-            print(f"  总题目数: {total}, 已评分: {already_graded}, 待评分: {need_grading}")
+            #print(f"  总题目数: {total}, 已评分: {already_graded}, 待评分: {need_grading}")
             
             if need_grading == 0:
                 print(f"  ✓ 所有题目已评分，跳过")
@@ -350,38 +350,19 @@ class TeacherGradingSystem:
 
 def main():
     """主函数"""
-    parser = argparse.ArgumentParser(description="教师AI评分系统")
-    parser.add_argument("--api-url", type=str, 
-                       default="https://api.openai.com/v1/chat/completions",
-                       help="教师AI的API地址")
-    parser.add_argument("--api-key", type=str, 
-                       default="your-api-key-here",
-                       help="API密钥")
-    parser.add_argument("--model", type=str, 
-                       default="gpt-4",
-                       help="使用的模型名称")
-    parser.add_argument("--results-dir", type=str, 
-                       default="../Results/deepseek",
-                       help="结果目录路径")
-    parser.add_argument("--no-backup", action="store_true",
-                       help="不备份原文件")
-    parser.add_argument("--strategy", type=str, default=None,
-                       help="只处理特定策略，如 Strategy_0_CoT")
-    
-    args = parser.parse_args()
     
     # 创建评分系统
     grading_system = TeacherGradingSystem(
-        api_url=args.api_url,
-        api_key=args.api_key,
-        model_name=args.model,
-        results_dir=args.results_dir,
-        backup=not args.no_backup
+        api_url="https://api.modelarts-maas.com/v2/chat/completions",
+        api_key="b8cqSto69jOQF-D7AqVkqB_yIhrTUSk4VIR-yjwMn6cGLSo7HDYr8T8bn4JfyULRh2emudTgCAVxM7v_RNdbTA",
+        model_name="deepseek-v3.2",
+        results_dir="../Results/deepseek",
+        backup=False
     )
     
     # 运行评分
     try:
-        grading_system.run(strategy_filter=args.strategy)
+        grading_system.run()
     except KeyboardInterrupt:
         print("\n\n程序被用户中断")
     except Exception as e:
