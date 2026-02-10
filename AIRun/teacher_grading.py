@@ -355,7 +355,7 @@ def main():
     grading_system = TeacherGradingSystem(
         api_url="https://api.modelarts-maas.com/v2/chat/completions",
         api_key="b8cqSto69jOQF-D7AqVkqB_yIhrTUSk4VIR-yjwMn6cGLSo7HDYr8T8bn4JfyULRh2emudTgCAVxM7v_RNdbTA",
-        model_name="deepseek-v3.2",
+        model_name="qwen3-235b-a22b",
         results_dir="../Results/deepseek",
         backup=False
     )
